@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class BallMovement : MonoBehaviour
+public class BallMovement : MonoBehaviour, ICollidable
 {
     private Rigidbody2D rb;
     private Vector2 direction;
     private float speed = 3f;
-
-    // Public getter/ setter methods 
+ 
     public Vector2 Direction
     {
         get { return direction; }
@@ -19,17 +18,10 @@ public class BallMovement : MonoBehaviour
         set { speed = value; }
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         Direction = new Vector2(1, 1);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     void FixedUpdate()
@@ -41,6 +33,18 @@ public class BallMovement : MonoBehaviour
     {
         Vector2 normal = collision.contacts[0].normal;
         Direction = Vector2.Reflect(direction, normal);
+
+        ICollidable collidable =
+            collision.gameObject.GetComponent<ICollidable>();
+
+        if (collidable != null)
+        {
+            collidable.OnHit(collision);
+        }
+    }
+
+    public void OnHit(Collision2D collision)
+    {
+        Debug.Log("Ball was hit!");
     }
 }
-
