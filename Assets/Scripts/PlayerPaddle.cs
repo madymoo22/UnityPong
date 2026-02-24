@@ -26,4 +26,3 @@ public class PlayerPaddle : PaddleMovement
             netY.Value = transform.position.y;
     }
 }
-
